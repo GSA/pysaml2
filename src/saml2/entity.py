@@ -1074,6 +1074,7 @@ class Entity(HTTPBase):
 
     def parse_manage_name_id_request_response(self, string,
                                               binding=BINDING_SOAP):
+        logger.debug('calling _parse_response entity line 1077')                         
         return self._parse_response(string, saml_response.ManageNameIDResponse,
                                     "manage_name_id_service", binding,
                                     asynchop=False)
@@ -1169,12 +1170,25 @@ class Entity(HTTPBase):
 
         keys = None
         if outstanding_certs:
+            logger.debug("*** outstanding_certs ***")
             try:
+                logger.debug("*** outstanding_certs inside try ***")
+                logger.debug("*** outstanding_certs ***")
+                logger.debug(outstanding_certs)
                 cert = outstanding_certs[response.in_response_to]
-            except KeyError:
+                logger.debug("*** cert ***")
+                logger.debug(cert)
+            except KeyError as e:
+                logger.debug("*** KeyError ***")
+                logger.debug(e)
                 keys = None
             else:
                 if not isinstance(cert, list):
+                    logger.debug("*** if not isinstance ***")
+                    logger.debug("*** if not isinstance cert ***")
+                    logger.debug(cert)
+                    logger.debug("*** if not isinstance list ***")
+                    logger.debug(list)
                     cert = [cert]
                 keys = []
                 for _cert in cert:
@@ -1228,6 +1242,7 @@ class Entity(HTTPBase):
     # ------------------------------------------------------------------------
 
     def parse_logout_request_response(self, xmlstr, binding=BINDING_SOAP):
+        logger.debug('calling _parse_response entity line 1244')
         return self._parse_response(xmlstr, LogoutResponse,
                                     "single_logout_service", binding)
 
@@ -1319,7 +1334,7 @@ class Entity(HTTPBase):
     def parse_artifact_resolve_response(self, xmlstr):
         kwargs = {"entity_id": self.config.entityid,
                   "attribute_converters": self.config.attribute_converters}
-
+        logger.debug('calling _parse_response entity line 1335')
         resp = self._parse_response(xmlstr, saml_response.ArtifactResponse,
                                     "artifact_resolve", BINDING_SOAP,
                                     **kwargs)

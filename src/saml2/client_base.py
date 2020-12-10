@@ -709,6 +709,7 @@ class Base(Entity):
         }
 
         try:
+            logger.debug('calling _parse_response client_base line 712')
             resp = self._parse_response(xmlstr, AuthnResponse,
                                         "assertion_consumer_service",
                                         binding, **kwargs)
@@ -743,7 +744,7 @@ class Base(Entity):
         """
         kwargs = {"entity_id": self.config.entityid,
                   "attribute_converters": self.config.attribute_converters}
-
+        logger.debug('calling _parse_response client_base line 746')
         return self._parse_response(response, AuthzResponse, "", binding,
                                     **kwargs)
 
@@ -752,7 +753,7 @@ class Base(Entity):
         """
         kwargs = {"entity_id": self.config.entityid,
                   "attribute_converters": self.config.attribute_converters}
-
+        logger.debug('calling _parse_response client_base line 755')
         return self._parse_response(response, AuthnQueryResponse, "", binding,
                                     **kwargs)
 
@@ -761,7 +762,7 @@ class Base(Entity):
         """
         kwargs = {"entity_id": self.config.entityid,
                   "attribute_converters": self.config.attribute_converters}
-
+        logger.debug('calling _parse_response client_base line 764')
         res = self._parse_response(response, AssertionIDResponse, "", binding,
                                    **kwargs)
         return res
@@ -771,7 +772,7 @@ class Base(Entity):
     def parse_attribute_query_response(self, response, binding):
         kwargs = {"entity_id": self.config.entityid,
                   "attribute_converters": self.config.attribute_converters}
-
+        logger.debug('calling _parse_response client_base line 774')
         return self._parse_response(response, AttributeResponse,
                                     "attribute_consuming_service", binding,
                                     **kwargs)
@@ -783,7 +784,7 @@ class Base(Entity):
         :param binding: Just a placeholder, it's always BINDING_SOAP
         :return: parsed and verified <NameIDMappingResponse> instance
         """
-
+        logger.debug('calling _parse_response client_base line 786')
         return self._parse_response(txt, NameIDMappingResponse, "", binding)
 
     # ------------------- ECP ------------------------------------------------
