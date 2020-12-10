@@ -897,11 +897,15 @@ class AuthnResponse(StatusResponse):
         :return: True encrypted data exists otherwise false.
         """
         if resp.encrypted_assertion:
+            logger.debug("*** if resp.encrypted_assertion line 899 ***")
             res = self.find_encrypt_data_assertion(resp.encrypted_assertion)
+            logger.debug(res)
             if res:
                 return True
         if resp.assertion:
+            logger.debug("*** if resp.assertion line 906 ***")
             for tmp_assertion in resp.assertion:
+                logger.debug("*** for tmp_assertion in resp.assertion: line 907 ***")
                 if tmp_assertion.advice:
                     if tmp_assertion.advice.encrypted_assertion:
                         res = self.find_encrypt_data_assertion(
@@ -938,22 +942,34 @@ class AuthnResponse(StatusResponse):
                     return False
 
         if self.find_encrypt_data(self.response):
-            logger.debug("***Encrypted assertion/-s***")
+            logger.debug("*** Encrypted assertion/-s ***")
             _enc_assertions = []
             resp = self.response
+            logger.debug("*** repsonse ***")
+            logger.debug(resp)
             decr_text = str(self.response)
+            logger.debug("*** decr_text ***")
+            logger.debug(decr_text)
 
             decr_text_old = None
             while self.find_encrypt_data(resp) and decr_text_old != decr_text:
+                logger.debug("*** inside while ***")
                 decr_text_old = decr_text
                 try:
                     decr_text = self.sec.decrypt_keys(decr_text, keys)
+                    logger.debug("*** decr_text inside while ***")
+                    (decr_text)
                 except DecryptError as e:
+                    logger.debug("*** DECRYPT ERROR ***")
+                    logger.debug(e)
                     continue
                 else:
                     resp = samlp.response_from_string(decr_text)
+                    logger.debug("*** inside while ELSE ***")
+                    logger.debug(resp)
                     # check and prepare for comparison between str and unicode
                     if type(decr_text_old) != type(decr_text):
+                        logger.debug("*** if type(decr_text_old) != type(decr_text) ***")
                         if isinstance(decr_text_old, six.binary_type):
                             decr_text_old = decr_text_old.decode("utf-8")
                         else:
@@ -962,6 +978,9 @@ class AuthnResponse(StatusResponse):
             _enc_assertions = self.decrypt_assertions(
                 resp.encrypted_assertion, decr_text
             )
+
+            logger.debug("***  _enc_assertions ***")
+            logger.debug(_enc_assertions)
 
             decr_text_old = None
             while (
