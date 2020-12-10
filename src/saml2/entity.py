@@ -1162,7 +1162,7 @@ class Entity(HTTPBase):
         finally:
             response.require_response_signature = require_response_signature
 
-        logger.debug("XMLSTR: %s", xmlstr)
+        logger.debug("XMLSTR: we removed it")
 
         if not response:
             return response
@@ -1191,14 +1191,25 @@ class Entity(HTTPBase):
             response.require_signature = True
             # Verify that the assertion is syntactically correct and the
             # signature on the assertion is correct if present.
+            logger.debug("*** response.verify(keys) ***")
+            logger.debug("*** keys ***")
+            logger.debug(keys)
             response = response.verify(keys)
+            logger.debug("*** response ***")
+            logger.debug(response)
         except SignatureError as err:
             if require_signature:
                 logger.error("Signature Error: %s", err)
                 raise
             else:
                 response.require_signature = require_signature
+                logger.debug("*** inside _parse_response line 1206 else statement ***")
+                logger.debug("*** keys ***")
+                logger.debug(keys)
                 response = response.verify(keys)
+                logger.debug("*** response ***")
+                logger.debug(response)
+    
         else:
             assertions_are_signed = True
         finally:

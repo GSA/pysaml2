@@ -324,7 +324,7 @@ class StatusResponse(object):
             self.xmlstr = xmldata[:].decode('utf-8')
         else:
             self.xmlstr = xmldata[:]
-        logger.debug("xmlstr: %s", self.xmlstr)
+        logger.debug("xmlstr: this is where it would be but we removed it")
         if origxml:
             self.origxml = origxml
         else:
@@ -1066,7 +1066,7 @@ class AuthnResponse(StatusResponse):
 
         if not isinstance(self.response, samlp.Response):
             return self
-
+        logger.debug("*** self.parse_assertion(keys): ***")
         if self.parse_assertion(keys):
             return self
         else:
@@ -1331,7 +1331,7 @@ class AssertionIDResponse(object):
     def loads(self, xmldata, decode=True, origxml=None):
         # own copy
         self.xmlstr = xmldata[:]
-        logger.debug("xmlstr: %s", self.xmlstr)
+        logger.debug("xmlstr: this is where it would be but we removed it")
         self.origxml = origxml
 
         try:
