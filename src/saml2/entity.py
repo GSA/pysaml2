@@ -387,7 +387,9 @@ class Entity(HTTPBase):
                     xmlstr = base64.b64decode(txt)
                 else:
                     xmlstr = txt
-            except Exception:
+            except Exception as e:
+                logger.error("*** Exception line 391 entity.py ***")
+                logger.error(e)
                 raise UnravelError("Unravelling binding '%s' failed" % binding)
 
         return xmlstr
@@ -1126,8 +1128,11 @@ class Entity(HTTPBase):
         except Exception as exc:
             logger.error("%s", exc)
             raise
-
+        
+        logger.error("*** xmlstr line 1130 ***")
         xmlstr = self.unravel(xmlstr, binding, response_cls.msgtype)
+        logger.error(xmlstr)
+        logger.error("*** xmlstr line 1130 ***")
         if not xmlstr:  # Not a valid reponse
             return None
 
