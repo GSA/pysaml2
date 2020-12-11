@@ -1132,7 +1132,7 @@ class Entity(HTTPBase):
         logger.error("*** xmlstr line 1130 ***")
         xmlstr = self.unravel(xmlstr, binding, response_cls.msgtype)
         logger.error(xmlstr)
-        logger.error("*** xmlstr line 1130 ***")
+        logger.error("*** xmlstr line 1135 ***")
         if not xmlstr:  # Not a valid reponse
             return None
 
