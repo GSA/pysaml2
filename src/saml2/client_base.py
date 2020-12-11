@@ -716,7 +716,9 @@ class Base(Entity):
         except StatusError as err:
             logger.error("SAML status error: %s", err)
             raise
-        except UnravelError:
+        except UnravelError as ue:
+            logger.error("*** UnravelError ***")
+            logger.error(ue)
             return None
         except Exception as err:
             logger.error("XML parse error: %s", err)
