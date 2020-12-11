@@ -108,18 +108,28 @@ class SAML2Plugin(object):
             self.metadata = self.conf.metadata
         except KeyError:
             self.metadata = None
+        logger.error('*** before sid_store line 111 ***')
         if sid_store:
+            logger.error('*** inside sid_store line 113 ***')
             self.outstanding_queries = shelve.open(
                 sid_store, writeback=True, protocol=2
             )
+            logger.error('*** self.outstanding_queries line 117 ***')
+            logger.error(self.outstanding_queries)
         else:
+            logger.error('*** else line 120 ***')
             self.outstanding_queries = {}
         if sid_store_cert:
+            logger.error('*** if id_store_cer line 123 ***')
             self.outstanding_certs = shelve.open(
                 sid_store_cert, writeback=True, protocol=2
             )
+            logger.error('*** outstanding_certs line 127 ***')
+            logger.error(self.outstanding_certs)
         else:
             self.outstanding_certs = {}
+            logger.error('*** else outstanding_certs line 132 ***')
+            logger.error(self.outstanding_certs)
 
         self.iam = platform.node()
 
