@@ -1131,7 +1131,6 @@ class Entity(HTTPBase):
         
         logger.error("*** xmlstr line 1130 ***")
         xmlstr = self.unravel(xmlstr, binding, response_cls.msgtype)
-        logger.error(xmlstr)
         logger.error("*** xmlstr line 1135 ***")
         if not xmlstr:  # Not a valid reponse
             return None
@@ -1147,7 +1146,9 @@ class Entity(HTTPBase):
             response.require_response_signature = True
             response = response.loads(xmlstr, False, origxml=xmlstr)
         except SigverError as err:
+            logger.error("*** SigverError as err line 1149 ***")
             if require_response_signature:
+                logger.error("*** require_response_signature 1151 ***")
                 logger.error("Signature Error: %s", err)
                 raise
             else:
@@ -1156,14 +1157,18 @@ class Entity(HTTPBase):
                 # value and attempt to consume the unpacked XML again.
                 response.require_response_signature = require_response_signature
                 response = response.loads(xmlstr, False, origxml=xmlstr)
+                logger.error("*** require_response_signature 1160 ***")
+                logger.error(require_response_signature)
         except UnsolicitedResponse:
             logger.error("Unsolicited response")
             raise
         except Exception as err:
+            logger.error("*** except Exception as err line 1162 ***")
             if "not well-formed" in "%s" % err:
                 logger.error("Not well-formed XML")
             raise
         else:
+            logger.error("*** response_is_signed line 1166 ***")
             response_is_signed = True
         finally:
             response.require_response_signature = require_response_signature
