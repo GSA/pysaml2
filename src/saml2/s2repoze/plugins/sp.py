@@ -346,7 +346,10 @@ class SAML2Plugin(object):
                 extensions = None
                 cert = None
 
-                if _cli.config.generate_cert_func is not None:
+                logger.info('CLI: {}. Config: {}'.format(_cli, _cli.config))
+                if _cli.config.generate_cert_func is None:
+                    logger.info('NO generate_cert_func')
+                else:
                     cert_str, req_key_str = _cli.config.generate_cert_func()
                     cert = {"cert": cert_str, "key": req_key_str}
                     spcertenc = SPCertEnc(
@@ -357,6 +360,7 @@ class SAML2Plugin(object):
                     extensions = Extensions(
                         extension_elements=[element_to_extension_element(spcertenc)]
                     )
+                    logger.info('CERT created {}'.format(cert))
 
                 if _cli.authn_requests_signed:
                     _sid = saml2.s_utils.sid()
@@ -376,7 +380,11 @@ class SAML2Plugin(object):
                     _sid = req_id
 
                 if cert is not None:
+                    logger.info('cert found {}'.format(cert))
                     self.outstanding_certs[_sid] = cert
+                else:
+                    logger.info('cert not found')
+                    
 
                 ht_args = _cli.apply_binding(
                     _binding,
