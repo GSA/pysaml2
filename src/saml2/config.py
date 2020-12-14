@@ -234,7 +234,7 @@ class Config(object):
         self.cert_handler_extra_class = None
         self.verify_encrypt_cert_advice = None
         self.verify_encrypt_cert_assertion = None
-        self.generate_cert_func = None
+        # self.generate_cert_func = None
         self.generate_cert_info = None
         self.tmp_cert_file = None
         self.tmp_key_file = None
@@ -559,8 +559,8 @@ class SPConfig(Config):
                     return eid
 
         return None
-    
-    def generate_cert_func(self):
+
+    def generate_cert_func():
         """  
         Returns cert_str, req_key_str
         """
