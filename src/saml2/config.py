@@ -560,8 +560,8 @@ class SPConfig(Config):
 
         return None
 
-    def generate_cert_func():
-        """  
+    def generate_cert_func(self):
+        """
         Returns cert_str, req_key_str
         """
         f = open(self.key_file, 'r')
