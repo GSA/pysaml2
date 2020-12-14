@@ -356,14 +356,21 @@ class SAML2Plugin(object):
                     logger.info('Start generate_cert_func')
                     cert_str, req_key_str = _cli.config.generate_cert_func()
                     cert = {"cert": cert_str, "key": req_key_str}
-                    spcertenc = SPCertEnc(
-                        x509_data=ds.X509Data(
-                            x509_certificate=ds.X509Certificate(text=cert_str)
-                        )
-                    )
+
+                    x509_cert = ds.X509Certificate(text=cert_str)
+                    logger.info('x509_cert: {}'.format(x509_cert))
+                    
+                    x509_data = ds.X509Data(x509_certificate=x509_cert)
+                    logger.info('x509_data: {}'.format(x509_data))
+                    
+                    spcertenc = SPCertEnc(x509_data=x509_data)
+                    logger.info('spcertenc: {}'.format(spcertenc))
+
                     extensions = Extensions(
                         extension_elements=[element_to_extension_element(spcertenc)]
                     )
+                    logger.info('extensions: {}'.format(extensions))
+
                     logger.info('CERT created {}'.format(cert))
 
                 if _cli.authn_requests_signed:
