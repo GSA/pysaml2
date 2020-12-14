@@ -134,7 +134,7 @@ def create_class_from_element_tree(target_class, tree, namespace=None,
     
         return target
     else:
-        root_logger.info('create_class_from_element_tree EMPTY {}'.format(target))
+        root_logger.info('create_class_from_element_tree EMPTY')
         return None
 
 
