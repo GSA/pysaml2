@@ -94,6 +94,7 @@ def create_class_from_xml_string(target_class, xml_string):
     if not isinstance(xml_string, six.binary_type):
         xml_string = xml_string.encode('utf-8')
     tree = defusedxml.ElementTree.fromstring(xml_string)
+    root_logger.info('create_class_from_xml_string {} {}'.format(target_class, tree))
     return create_class_from_element_tree(target_class, tree)
 
 
@@ -119,14 +120,21 @@ def create_class_from_element_tree(target_class, tree, namespace=None,
         of the XML tree's root node did not match the desired namespace and tag.
     """
     if namespace is None:
-        namespace = target_class.c_namespace
+        create_class_from_element_tree = target_class.c_namespace
+        root_logger.info('create_class_from_element_tree namespace {}'.format(create_class_from_element_tree))
+    
     if tag is None:
         tag = target_class.c_tag
+        root_logger.info('create_class_from_element_tree TAG {}'.format(tag))
+    
     if tree.tag == '{%s}%s' % (namespace, tag):
         target = target_class()
         target.harvest_element_tree(tree)
+        root_logger.info('create_class_from_element_tree TARGET {}'.format(target))
+    
         return target
     else:
+        root_logger.info('create_class_from_element_tree EMPTY {}'.format(target))
         return None
 
 
