@@ -1638,6 +1638,7 @@ class SecurityContext(object):
         if not response:
             raise TypeError('Not a Response')
 
+        logger.info('correctly_signed_response {} | {}'.format(response, response.signature))
         if response.signature:
             if 'do_not_verify' in kwargs:
                 pass

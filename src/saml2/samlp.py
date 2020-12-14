@@ -3,11 +3,15 @@
 #
 # Generated Mon May  2 14:23:33 2011 by parse_xsd.py version 0.4.
 #
-
+import logging
 import saml2
 from saml2 import saml
 from saml2 import SamlBase
 from saml2 import xmldsig as ds
+
+
+logger = logging.getLogger(__name__)
+
 
 NAMESPACE = 'urn:oasis:names:tc:SAML:2.0:protocol'
 
@@ -1845,7 +1849,10 @@ def any_response_from_string(xmlstr):
                  name_id_mapping_response_from_string,
                  manage_name_id_response_from_string]:
         resp = func(xmlstr)
+        logger.info('any_response_from_string: {} {}'.format(func, resp))
         if resp:
+            logger.info('BREAK any_response_from_string')
+        
             break
 
     if not resp:
