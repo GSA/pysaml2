@@ -358,23 +358,25 @@ class SAML2Plugin(object):
                     cert = {"cert": cert_str, "key": req_key_str}
 
                     x509_cert = ds.X509Certificate(text=cert_str)
-                    logger.info('x509_cert: {}'.format(x509_cert))
+                    # Just a cert inside XML logger.info('x509_cert: {}'.format(x509_cert))
                     
                     x509_data = ds.X509Data(x509_certificate=x509_cert)
-                    logger.info('x509_data: {}'.format(x509_data))
+                    # Just a cert inside XML logger.info('x509_data: {}'.format(x509_data))
                     
                     spcertenc = SPCertEnc(x509_data=x509_data)
-                    logger.info('spcertenc: {}'.format(spcertenc))
+                    # just XML with cert logger.info('spcertenc: {}'.format(spcertenc))
 
                     extensions = Extensions(
                         extension_elements=[element_to_extension_element(spcertenc)]
                     )
-                    logger.info('extensions: {}'.format(extensions))
+                    # logger.info('extensions: {}'.format(extensions))
 
                     logger.info('CERT created {}'.format(cert))
 
+                logger.info('_cli.authn_requests_signed: {}'.format(_cli.authn_requests_signed))
                 if _cli.authn_requests_signed:
                     _sid = saml2.s_utils.sid()
+                    logger.info('authn_requests_signed _sid: {}'.format(_sid))
                     req_id, msg_str = _cli.create_authn_request(
                         dest,
                         vorg=vorg_name,
@@ -382,13 +384,18 @@ class SAML2Plugin(object):
                         message_id=_sid,
                         extensions=extensions,
                     )
+                    logger.info('req_id, msg_str: {}, {}'.format(req_id, msg_str))
+                    
                     _sid = req_id
                 else:
+                    logger.info('NO authn_requests_signed')
                     req_id, req = _cli.create_authn_request(
                         dest, vorg=vorg_name, sign=False, extensions=extensions
                     )
                     msg_str = "%s" % req
                     _sid = req_id
+                    logger.info('req_id, req {}, {}'.format(req_id, req))
+                    
 
                 if cert is not None:
                     logger.info('cert found {}'.format(cert))

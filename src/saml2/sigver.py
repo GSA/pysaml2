@@ -1023,6 +1023,7 @@ def security_context(conf):
             # if not os.access(, os.F_OK):
             err_msg = 'xmlsec binary not found: {binary}'
             err_msg = err_msg.format(binary=xmlsec_binary)
+            logger.error(err_msg)
             raise SigverError(err_msg)
 
         crypto = _get_xmlsec_cryptobackend(xmlsec_binary)
@@ -1043,6 +1044,7 @@ def security_context(conf):
     else:
         err_msg = 'Unknown crypto_backend {backend}'
         err_msg = err_msg.format(backend=conf.crypto_backend)
+        logger.error(err_msg)
         raise SigverError(err_msg)
 
     enc_key_files = []

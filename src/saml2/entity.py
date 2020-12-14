@@ -1123,13 +1123,14 @@ class Entity(HTTPBase):
                         binding=binding,
                         context=self.entity_type)
 
+        logger.info('Response class {}'.format(response_cls))
         try:
             response = response_cls(self.sec, **kwargs)
         except Exception as exc:
             logger.error("%s", exc)
             raise
         
-        logger.error("*** xmlstr line 1130 ***")
+        logger.error("*** Response obj {} ***".format(response))
         xmlstr = self.unravel(xmlstr, binding, response_cls.msgtype)
         logger.error("*** xmlstr line 1135 ***")
         if not xmlstr:  # Not a valid reponse
@@ -1146,7 +1147,7 @@ class Entity(HTTPBase):
             response.require_response_signature = True
             response = response.loads(xmlstr, False, origxml=xmlstr)
         except SigverError as err:
-            logger.error("*** SigverError as err line 1149 ***")
+            logger.error("*** SigverError as err line 1149 *** {}".format(err))
             if require_response_signature:
                 logger.error("*** require_response_signature 1151 ***")
                 logger.error("Signature Error: %s", err)

@@ -1331,18 +1331,20 @@ class AssertionIDResponse(object):
     def loads(self, xmldata, decode=True, origxml=None):
         # own copy
         self.xmlstr = xmldata[:]
-        logger.debug("xmlstr: this is where it would be but we removed it")
+        logger.debug("LOAD response")
         self.origxml = origxml
 
         try:
             self.response = self.signature_check(xmldata, origdoc=origxml)
             self.assertion = self.response
-        except TypeError:
+        except TypeError as err:
+            logger.exception("TypeError: {}".format(err))
             raise
-        except SignatureError:
+        except SignatureError as err:
+            logger.exception("SignatureError: {}".format(err))
             raise
-        except Exception as excp:
-            logger.exception("EXCEPTION: %s", excp)
+        except Exception as err:
+            logger.exception("Exception: {}".format(err))
             raise
 
         # print("<", self.response)
