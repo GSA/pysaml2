@@ -97,6 +97,8 @@ class SAML2Plugin(object):
         self.rememberer_name = rememberer_name
         self.wayf = wayf
         self.saml_client = saml_client
+        logger.info('SAML2Plugin client {}'.format(saml_client))
+
         self.conf = config
         self.cache = cache
         self.discosrv = discovery
@@ -286,6 +288,7 @@ class SAML2Plugin(object):
         logger.debug("[sp.challenge()]")
         
         _cli = self.saml_client
+        logger.info('_CLI {}'.format(_cli))
 
         if "REMOTE_USER" in environ:
             name_id = decode(environ["REMOTE_USER"])
@@ -706,6 +709,7 @@ def make_plugin(
     if remember_name is None:
         raise ValueError("must include remember_name in configuration")
 
+    logger.info('make_plugin saml_conf: {}. cache: {}'.format(saml_conf, cache))
     conf = config_factory("sp", saml_conf)
 
     scl = Saml2Client(
@@ -714,7 +718,17 @@ def make_plugin(
         virtual_organization=virtual_organization,
     )
 
+    logger.info('Saml2Client Created\n\tCONF: {}'.format(conf))
+
     plugin = SAML2Plugin(
-        remember_name, conf, scl, wayf, cache, sid_store, discovery, idp_query_param, sid_store_cert
+        rememberer_name=remember_name,
+        config=conf,
+        saml_client=scl,
+        wayf=wayf,
+        cache=cache,
+        sid_store=sid_store,
+        discovery=discovery,
+        idp_query_param=idp_query_param,
+        sid_store_cert=sid_store_cert
     )
     return plugin

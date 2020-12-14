@@ -435,7 +435,7 @@ class Entity(HTTPBase):
         except (AttributeError, TypeError):
             to_sign = [(class_name(msg), mid)]
 
-        logger.info("REQUEST: %s", msg)
+        logger.info("entity sign REQUEST: %s", msg)
         return signed_instance_factory(msg, self.sec, to_sign)
 
     def _message(self, request_cls, destination=None, message_id=0,
@@ -486,7 +486,7 @@ class Entity(HTTPBase):
             return reqid, self.sign(req, sign_prepare=sign_prepare,
                                     sign_alg=sign_alg, digest_alg=digest_alg)
         else:
-            logger.info("REQUEST: %s", req)
+            logger.info("entity msg REQUEST: %s", req)
             return reqid, req
 
     @staticmethod

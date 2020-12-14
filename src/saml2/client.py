@@ -61,6 +61,8 @@ class Saml2Client(Base):
         :return: session id and AuthnRequest info
         """
 
+        logger.info('New Saml2Client {}'.format(kwargs))
+        
         reqid, negotiated_binding, info = \
             self.prepare_for_negotiated_authenticate(
                 entityid=entityid,
