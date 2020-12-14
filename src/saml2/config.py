@@ -559,6 +559,20 @@ class SPConfig(Config):
                     return eid
 
         return None
+    
+    def generate_cert_func(self):
+        """  
+        Returns cert_str, req_key_str
+        """
+        f = open(self.key_file, 'r')
+        req_key_str = f.read()
+        f.close()
+
+        f = open(self.cert_file, 'r')
+        cert_str = f.read()
+        f.close()
+
+        return cert_str, req_key_str
 
 
 class IdPConfig(Config):

@@ -353,6 +353,7 @@ class SAML2Plugin(object):
                 if _cli.config.generate_cert_func is None:
                     logger.info('NO generate_cert_func')
                 else:
+                    logger.info('Start generate_cert_func')
                     cert_str, req_key_str = _cli.config.generate_cert_func()
                     cert = {"cert": cert_str, "key": req_key_str}
                     spcertenc = SPCertEnc(
