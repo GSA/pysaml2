@@ -211,17 +211,20 @@ class SAML2Plugin(object):
                     _entityid = _cli.config.ecp_endpoint(environ["REMOTE_ADDR"])
 
                     if not _entityid:
+                        logger.error("NO IdP to talk to")
                         return -1, HTTPInternalServerError(detail="No IdP to talk to")
                     logger.info("IdP to talk to: %s", _entityid)
                     return ecp.ecp_auth_request(_cli, _entityid, _relay_state)
                 else:
+                    logger.error('Faulty Accept header')
                     return -1, HTTPInternalServerError(detail="Faulty Accept header")
             else:
+                logger.error('unknown ECP version')
                 return -1, HTTPInternalServerError(detail="unknown ECP version")
 
         idps = self.metadata.with_descriptor("idpsso")
-
-        logger.info("IdP URL: %s", idps)
+        
+        logger.info("IdP param: {} IdPs: {}".format(self.idp_query_param, idps))
 
         idp_entity_id = query = None
 
@@ -232,20 +235,24 @@ class SAML2Plugin(object):
                     _idp_entity_id = dict(parse.parse_qs(query))[self.idp_query_param][0]
                     if _idp_entity_id in idps:
                         idp_entity_id = _idp_entity_id
+                    else:
+                        logger.info
                     break
                 except KeyError:
-                    logger.debug("No IdP entity ID in query: %s", query)
+                    logger.debug("No IdP [{}] entity ID in query: {}".format(self.idp_query_param, query))
                     pass
 
         if idp_entity_id is None:
             if len(idps) == 1:
                 # idps is a dictionary
+                logger.info('Set idp_entity_id using the unique IDP from {}'.format(idps.keys()))
                 idp_entity_id = idps.keys()[0]
             elif not len(idps):
+                logger.error('Misconfiguration')
                 return -1, HTTPInternalServerError(detail="Misconfiguration")
             else:
                 idp_entity_id = ""
-                logger.info("ENVIRON: %s", environ)
+                logger.info("More than one IdP to select from. ENVIRON: %s", environ)
 
                 if self.wayf:
                     if query:
@@ -276,6 +283,7 @@ class SAML2Plugin(object):
                         return -1, SeeOther(loc)
 
                 else:
+                    logger.error('No WAYF or DJ present!')
                     return -1, HTTPNotImplemented(detail="No WAYF or DJ present!")
 
         logger.info("Chosen IdP: '%s'", idp_entity_id)
@@ -331,6 +339,7 @@ class SAML2Plugin(object):
         #               >0 ECP in progress
         logger.debug("_idp_pick returned: %s", done)
         if done == -1:
+            logger.error('_pick_idp == -1 HTTP 500: {}'.format(response))
             return response
         elif done > 0:
             self.outstanding_queries[done] = came_from

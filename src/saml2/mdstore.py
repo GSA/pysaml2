@@ -368,6 +368,7 @@ class MetaData(object):
         for eid, ent in self.items():
             if desc in ent:
                 res[eid] = ent
+        logger.info('Metadata.with_descriptor for {}: {}'.format(descriptor, res))
         return res
 
     def __str__(self):
@@ -1205,6 +1206,7 @@ class MetadataStore(MetaData):
         res = {}
         for _md in self.metadata.values():
             res.update(_md.with_descriptor(descriptor))
+        logger.info('MetadataStore.with_descriptor for {}: {}'.format(descriptor, res))
         return res
 
     def name(self, entity_id, langpref="en"):
