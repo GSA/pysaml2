@@ -108,9 +108,10 @@ class SAML2Plugin(object):
         ]
         try:
             self.metadata = self.conf.metadata
+            logger.info('Configuration Metadata: {}'.format(self.metadata))
         except KeyError:
+            logger.error('No metadata in {}'.format(self.conf))
             self.metadata = None
-        logger.error('*** before sid_store line 111 ***')
         if sid_store:
             logger.error('*** inside sid_store line 113 ***')
             self.outstanding_queries = shelve.open(
@@ -235,8 +236,6 @@ class SAML2Plugin(object):
                     _idp_entity_id = dict(parse.parse_qs(query))[self.idp_query_param][0]
                     if _idp_entity_id in idps:
                         idp_entity_id = _idp_entity_id
-                    else:
-                        logger.info
                     break
                 except KeyError:
                     logger.debug("No IdP [{}] entity ID in query: {}".format(self.idp_query_param, query))
