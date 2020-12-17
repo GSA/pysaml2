@@ -95,7 +95,7 @@ def create_class_from_xml_string(target_class, xml_string):
         root_logger.error('XML not binary to UTF8')
         xml_string = xml_string.encode('utf-8')
 
-    root_logger.error('Before DEFUSE {}'.format(xml_string))
+    root_logger.error('Before DEFUSE {}'.format(xml_string[:20]))
 
     tree = defusedxml.ElementTree.fromstring(xml_string)
     root_logger.info('create_class_from_xml_string {} {}'.format(target_class, tree))
