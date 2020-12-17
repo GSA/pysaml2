@@ -130,7 +130,7 @@ def create_class_from_element_tree(target_class, tree, namespace=None,
         of the XML tree's root node did not match the desired namespace and tag.
     """
     if namespace is None:
-        create_class_from_element_tree = target_class.c_namespace
+        namespace = target_class.c_namespace
         root_logger.info('create_class_from_element_tree namespace {}'.format(create_class_from_element_tree))
     
     if tag is None:
