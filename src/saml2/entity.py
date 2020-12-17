@@ -1183,23 +1183,14 @@ class Entity(HTTPBase):
         if outstanding_certs:
             logger.debug("*** outstanding_certs ***")
             try:
-                logger.debug("*** outstanding_certs inside try ***")
-                logger.debug("*** outstanding_certs ***")
-                logger.debug(outstanding_certs)
+                logger.debug("*** outstanding_certs try *** {}. Keys: {}".format(response.in_response_to, outstanding_certs.keys()))
                 cert = outstanding_certs[response.in_response_to]
-                logger.debug("*** cert ***")
-                logger.debug(cert)
             except KeyError as e:
-                logger.debug("*** KeyError ***")
-                logger.debug(e)
+                logger.debug("*** KeyError *** {}".format(e))
                 keys = None
             else:
                 if not isinstance(cert, list):
-                    logger.debug("*** if not isinstance ***")
-                    logger.debug("*** if not isinstance cert ***")
-                    logger.debug(cert)
-                    logger.debug("*** if not isinstance list ***")
-                    logger.debug(list)
+                    logger.debug("*** CERT {} ***".format(cert))
                     cert = [cert]
                 keys = []
                 for _cert in cert:
@@ -1216,11 +1207,9 @@ class Entity(HTTPBase):
             response.require_signature = True
             # Verify that the assertion is syntactically correct and the
             # signature on the assertion is correct if present.
-            logger.debug("*** response.verify(keys) ***")
-            logger.debug("*** keys ***")
-            logger.debug(keys)
+            logger.debug("*** response.verify(keys) *** KEYs {}".format(keys))
             response = response.verify(keys)
-            logger.debug("*** response ***")
+            logger.debug("*** response verify keys ***")
             logger.debug(response)
         except SignatureError as err:
             if require_signature:

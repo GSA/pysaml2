@@ -957,11 +957,9 @@ class AuthnResponse(StatusResponse):
                 decr_text_old = decr_text
                 try:
                     decr_text = self.sec.decrypt_keys(decr_text, keys)
-                    logger.debug("*** decr_text inside while ***")
-                    (decr_text)
+                    logger.debug("*** decr_text inside while *** {}".format(decr_text))
                 except DecryptError as e:
-                    logger.debug("*** DECRYPT ERROR ***")
-                    logger.debug(e)
+                    logger.debug("*** DECRYPT ERROR *** {}".format(e))
                     continue
                 else:
                     resp = samlp.response_from_string(decr_text)
@@ -1130,7 +1128,7 @@ class AuthnResponse(StatusResponse):
                 "came_from": self.came_from, "issuer": self.issuer(),
                 "not_on_or_after": nooa, "authn_info": self.authn_info(),
                 }
-                
+
             if self.assertion is None:
                 logger.error('Empty assertion at {}. {}'.format(self.context, data))
 
