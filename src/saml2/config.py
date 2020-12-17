@@ -619,7 +619,7 @@ def config_factory(_type, config):
     if isinstance(config, dict):
         conf.load(copy.deepcopy(config))
     elif isinstance(config, str):
-        conf.load_file(config)
+        conf.load_file(config, metadata_construction=True)
     else:
         raise ValueError('Unknown type of config')
 
