@@ -99,10 +99,14 @@ def create_class_from_xml_string(target_class, xml_string):
 
     root_logger.error('Before DEFUSE {}'.format(xml_string[:20]))
 
-    tree = defusedxml.ElementTree.fromstring(xml_string)
-    root_logger.info('create_class_from_xml_string {} {}'.format(target_class, tree))
-    return create_class_from_element_tree(target_class, tree)
-
+    try:
+        tree = defusedxml.ElementTree.fromstring(xml_string)
+        root_logger.error('create_class_from_xml_string {} {}'.format(target_class, tree))
+        return create_class_from_element_tree(target_class, tree)
+    except Exception as e:
+        root_logger.error('FAILED create_class_from_xml_string {}'.format(target_class))
+        return None
+        
 
 def create_class_from_element_tree(target_class, tree, namespace=None,
                                    tag=None):

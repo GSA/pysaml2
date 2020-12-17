@@ -690,9 +690,10 @@ class MetaDataFile(InMemoryMetaData):
             raise SAMLError('No file specified.')
         self.filename = filename
         self.cert = cert
+        logger.info('MetaDataFile {} {}'.format(filename, cert))
 
     def get_metadata_content(self):
-        with open(self.filename, 'r') as fp:
+        with open(self.filename, 'rb') as fp:
             return fp.read()
 
     def load(self, *args, **kwargs):
