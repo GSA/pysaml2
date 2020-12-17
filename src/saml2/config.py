@@ -348,7 +348,6 @@ class Config(object):
         
         _uc = self.unicode_convert
         for arg in COMMON_ARGS:
-            logger.debug('CONF COMMON {}'.format(arg))
             if arg == "virtual_organization":
                 if "virtual_organization" in cnf:
                     for key, val in cnf["virtual_organization"].items():
