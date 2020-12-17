@@ -692,7 +692,7 @@ class MetaDataFile(InMemoryMetaData):
         self.cert = cert
 
     def get_metadata_content(self):
-        with open(self.filename, 'rb') as fp:
+        with open(self.filename, 'r') as fp:
             return fp.read()
 
     def load(self, *args, **kwargs):
