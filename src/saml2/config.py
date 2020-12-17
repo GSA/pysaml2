@@ -260,12 +260,13 @@ class Config(object):
             return getattr(self, "_%s_%s" % (context, attr), None)
 
     def load_special(self, cnf, typ, metadata_construction=False):
-        logger.debug('CONF load_special {} - {}'.format(cnf, typ))
+        # logger.debug('CONF load_special {} - {}'.format(cnf, typ))
             
         for arg in SPEC[typ]:
             try:
                 _val = cnf[arg]
             except KeyError:
+                logger.info('CONF load_special KEYERROR for {}'.format(arg))
                 pass
             else:
                 if _val == "true":
@@ -362,10 +363,13 @@ class Config(object):
 
             try:
                 setattr(self, arg, _uc(cnf[arg]))
+                logger.debug('CONF COMMON {}={}'.format(arg, _uc(cnf[arg])))
             except KeyError:
+                logger.debug('CONF COMMON {} KEYERROR'.format(arg))
                 pass
             except TypeError:  # Something that can't be a string
                 setattr(self, arg, cnf[arg])
+                logger.debug('CONF COMMON {}={}'.format(arg, _uc(cnf[arg])))
 
         if "service" in cnf:
             for typ in ["aa", "idp", "sp", "pdp", "aq"]:
