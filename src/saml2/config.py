@@ -320,7 +320,10 @@ class Config(object):
                 self.setattr(typ, "metadata",
                              self.load_metadata(cnf["metadata"]))
             except KeyError:
+                logger.info('Not loading METADATA because key not exists')
                 pass
+        else:
+            logger.info('Not loading METADATA because metadata_construction=TRUE')
 
     def unicode_convert(self, item):
         try:
@@ -411,6 +414,7 @@ class Config(object):
 
     def load_metadata(self, metadata_conf):
         """ Loads metadata into an internal structure """
+        logger.debug('Loading metadata from {}'.format(metadata_conf))
 
         acs = self.attribute_converters
 
@@ -431,6 +435,8 @@ class Config(object):
             disable_ssl_certificate_validation=disable_validation)
 
         mds.imp(metadata_conf)
+
+        logger.info('Metadata loaded {}'.format(mds))
 
         return mds
 
@@ -619,7 +625,7 @@ def config_factory(_type, config):
     if isinstance(config, dict):
         conf.load(copy.deepcopy(config))
     elif isinstance(config, str):
-        conf.load_file(config, metadata_construction=True)
+        conf.load_file(config)
     else:
         raise ValueError('Unknown type of config')
 
