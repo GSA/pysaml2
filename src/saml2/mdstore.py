@@ -923,7 +923,7 @@ class MetadataStore(MetaData):
             else:
                 # else it's just a plain old file so read it
                 _md = MetaDataFile(self.attrc, key, **_args)
-                logger.info('METADATA readed from file {} with {} AND {}'.format(_md, self.attrc, _args))
+                logger.info('METADATA readed from file: {}. FROM: {} with {} AND {}'.format(_md, key, self.attrc, _args))
         elif typ == "inline":
             self.ii += 1
             key = self.ii
