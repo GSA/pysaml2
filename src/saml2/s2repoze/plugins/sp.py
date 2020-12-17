@@ -223,6 +223,7 @@ class SAML2Plugin(object):
                 logger.error('unknown ECP version')
                 return -1, HTTPInternalServerError(detail="unknown ECP version")
 
+        logger.info('METADATA: {} from config: {}'.format(self.metadata, self.conf))
         idps = self.metadata.with_descriptor("idpsso")
         
         logger.info("IdP param: {} IdPs: {}".format(self.idp_query_param, idps))
