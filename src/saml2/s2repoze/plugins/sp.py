@@ -594,7 +594,7 @@ class SAML2Plugin(object):
                             environ, post, binding=binding
                         )
                 except Exception as err:
-                    logger.exception("[sp.identify] saml_error")
+                    logger.exception("[sp.identify] identify saml_error {}".format(err))
                     environ["s2repoze.saml_error"] = err
                     return {}
         except TypeError as exc:
