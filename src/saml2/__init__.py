@@ -91,6 +91,8 @@ def create_class_from_xml_string(target_class, xml_string):
         the contents of the XML - or None if the root XML tag and namespace did
         not match those of the target class.
     """
+    root_logger.error('Before DEFUSE CLASS {}'.format(target_class))
+    
     if not isinstance(xml_string, six.binary_type):
         root_logger.error('XML not binary to UTF8')
         xml_string = xml_string.encode('utf-8')

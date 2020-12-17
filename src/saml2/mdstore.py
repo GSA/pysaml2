@@ -541,6 +541,7 @@ class InMemoryMetaData(MetaData):
             self.entity[entity_descr.entity_id] = _ent
 
     def parse(self, xmlstr):
+        logger.info('About to read XML')
         self.entities_descr = md.entities_descriptor_from_string(xmlstr)
 
         if not self.entities_descr:
@@ -654,6 +655,7 @@ class InMemoryMetaData(MetaData):
             return False
 
     def parse_and_check_signature(self, txt):
+        logger.info('About to parse TXT {} ...'.format(txt[:20]))
         self.parse(txt)
 
         if self.cert:
@@ -695,6 +697,7 @@ class MetaDataFile(InMemoryMetaData):
 
     def load(self, *args, **kwargs):
         _txt = self.get_metadata_content()
+        logger.info('Get metadata content {}'.format(_txt[:20]))
         return self.parse_and_check_signature(_txt)
 
 
