@@ -490,6 +490,7 @@ class InMemoryMetaData(MetaData):
         del self.entity[key]
 
     def do_entity_descriptor(self, entity_descr):
+        logger.info('do_entity_descriptor {}'.format(entity_descr))
         if self.check_validity:
             try:
                 if not valid(entity_descr.valid_until):
@@ -498,6 +499,7 @@ class InMemoryMetaData(MetaData):
                     self.to_old.append(entity_descr.entity_id)
                     return
             except AttributeError:
+                logger.error('do_entity_descriptor AttributeError')
                 pass
 
         # have I seen this entity_id before ? If so if log: ignore it
@@ -514,7 +516,9 @@ class InMemoryMetaData(MetaData):
             _res = []
             try:
                 _items = _ent["%s_descriptor" % descr]
+                logger.info('do_entity_descriptor Key OK {} = {}'.format(descr, _items))
             except KeyError:
+                logger.error('do_entity_descriptor KeyError for {}'.format(descr))
                 continue
 
             if descr == "affiliation":  # Not protocol specific
@@ -522,6 +526,7 @@ class InMemoryMetaData(MetaData):
                 continue
 
             for item in _items:
+                logger.info('do_entity_descriptor ITEM {}'.format(item))
                 for prot in item["protocol_support_enumeration"].split(" "):
                     if prot == samlp.NAMESPACE:
                         item["protocol_support_enumeration"] = prot
@@ -539,6 +544,9 @@ class InMemoryMetaData(MetaData):
 
         if flag:
             self.entity[entity_descr.entity_id] = _ent
+        
+        logger.info('do_entity_descriptor FINISH {}'.format(self.entity))
+                
 
     def parse(self, xmlstr):
         logger.info('About to read XML')
