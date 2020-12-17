@@ -666,10 +666,13 @@ class InMemoryMetaData(MetaData):
 
             if self.security.verify_signature(
                     txt, node_name=node_name, cert_file=self.cert):
+                logger.info('Metadata file readed good validation')
                 return True
             else:
+                logger.info('Metadata file readed bad validation')
                 return False
         else:
+            logger.info('Metadata file readed without cert validation')
             return True
 
 
@@ -920,6 +923,7 @@ class MetadataStore(MetaData):
             else:
                 # else it's just a plain old file so read it
                 _md = MetaDataFile(self.attrc, key, **_args)
+                logger.info('METADATA readed from file {} with {} AND {}'.format(_md, self.attrc, _args))
         elif typ == "inline":
             self.ii += 1
             key = self.ii

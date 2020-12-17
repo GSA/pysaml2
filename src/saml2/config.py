@@ -317,8 +317,7 @@ class Config(object):
 
         if not metadata_construction:
             try:
-                self.setattr(typ, "metadata",
-                             self.load_metadata(cnf["metadata"]))
+                self.setattr(typ, "metadata", self.load_metadata(cnf["metadata"]))
             except KeyError:
                 logger.info('Not loading METADATA because key not exists')
                 pass
