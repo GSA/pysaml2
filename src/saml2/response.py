@@ -1124,11 +1124,19 @@ class AuthnResponse(StatusResponse):
                     "issuer": self.issuer(), "not_on_or_after": nooa,
                     "authz_decision_info": self.authz_decision_info()}
         else:
+            data = {
+                "ava": self.ava,
+                "name_id": self.name_id,
+                "came_from": self.came_from, "issuer": self.issuer(),
+                "not_on_or_after": nooa, "authn_info": self.authn_info(),
+                }
+                
+            if self.assertion is None:
+                logger.error('Empty assertion at {}. {}'.format(self.context, data))
+
             authn_statement = self.assertion.authn_statement[0]
-            return {"ava": self.ava, "name_id": self.name_id,
-                    "came_from": self.came_from, "issuer": self.issuer(),
-                    "not_on_or_after": nooa, "authn_info": self.authn_info(),
-                    "session_index": authn_statement.session_index}
+            data["session_index"] = authn_statement.session_index
+            return data            
 
     def __str__(self):
         return self.xmlstr
