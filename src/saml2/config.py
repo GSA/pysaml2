@@ -260,6 +260,8 @@ class Config(object):
             return getattr(self, "_%s_%s" % (context, attr), None)
 
     def load_special(self, cnf, typ, metadata_construction=False):
+        logger.debug('CONF load_special {} - {}'.format(cnf, typ))
+            
         for arg in SPEC[typ]:
             try:
                 _val = cnf[arg]
@@ -270,6 +272,9 @@ class Config(object):
                     _val = True
                 elif _val == "false":
                     _val = False
+
+                logger.info('CONF load_special SET {} - {} - {}'.format(typ, arg, _val))
+        
                 self.setattr(typ, arg, _val)
 
         self.context = typ
@@ -277,6 +282,7 @@ class Config(object):
         self.context = self.def_context
 
     def load_complex(self, cnf, typ="", metadata_construction=False):
+        logger.debug('CONF load_complex {} - {}'.format(cnf, typ))
         try:
             self.setattr(typ, "policy", Policy(cnf["policy"]))
         except KeyError:
@@ -337,8 +343,11 @@ class Config(object):
             metadata. If so some things can be left out.
         :return: The Configuration instance
         """
+        logger.debug('CONFIG.load {}'.format(cnf))
+        
         _uc = self.unicode_convert
         for arg in COMMON_ARGS:
+            logger.debug('CONF COMMON {}'.format(arg))
             if arg == "virtual_organization":
                 if "virtual_organization" in cnf:
                     for key, val in cnf["virtual_organization"].items():
@@ -377,6 +386,7 @@ class Config(object):
         return self
 
     def _load(self, fil):
+        logger.debug('CONFIG._load {}'.format(fil))
         head, tail = os.path.split(fil)
         if head == "":
             if sys.path[0] != ".":
@@ -387,10 +397,13 @@ class Config(object):
         return importlib.import_module(tail)
 
     def load_file(self, config_filename, metadata_construction=False):
+        logger.debug('CONFIG.load_file {}'.format(config_filename))
         if config_filename.endswith(".py"):
             config_filename = config_filename[:-3]
 
+        logger.info('Reading SAML configuration from {}'.format(config_filename))
         mod = self._load(config_filename)
+        logger.info('Loading SAML configuration {}'.format(mod.CONFIG))
         return self.load(copy.deepcopy(mod.CONFIG), metadata_construction)
 
     def load_metadata(self, metadata_conf):
